@@ -1,0 +1,5 @@
+.img-container {
+    background-image: url('../assets/1020.jpg');
+    filter: blur(5px); /* Adjust the blur value as needed */
+  }
+  

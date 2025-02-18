@@ -39,6 +39,7 @@ const App = () => {
 
         <div className="container mt-4">
           <Routes>
+          <Route path="/" element={<Signup />} /> {/* Default route */}
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/dashboard" element={<Dashboard />} />
