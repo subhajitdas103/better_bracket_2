@@ -2,19 +2,19 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import google_icon from '../assets/google_icon.png';
 import facebook_icon from '../assets/facebook_icon.png';
-import bg from '../assets/kristin-dope-zkx29dCIzO0-unsplash.jpg';
-
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
+  const navigate = useNavigate();
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       console.log('Google Token:', tokenResponse);
 
       try {
-        const res = await axios.post('api/google-login', {
+        // Correct the axios.post call to include the access token
+        const res = await axios.post('http://127.0.0.1:8000/api/google-login', {
           access_token: tokenResponse.access_token,
         });
 
@@ -35,7 +35,6 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -48,7 +47,6 @@ const Signup = () => {
 
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
-      {/* Background Image Wrapper */}
       <div 
         style={{
           position: 'absolute', 
@@ -56,15 +54,13 @@ const Signup = () => {
           left: 0, 
           right: 0, 
           bottom: 0, 
-        //   backgroundImage: `url(${bg})`,
           backgroundSize: 'cover', 
           backgroundPosition: 'center',
-          filter: 'blur(5px)', // Apply blur only to the background
-          zIndex: -1, // Ensure the background is behind the content
+          filter: 'blur(5px)', 
+          zIndex: -1, 
         }}
       ></div>
 
-      {/* Content */}
       <div className="container md-6">
         <div className="row justify-content-center">
           <div className="col-md-4">
