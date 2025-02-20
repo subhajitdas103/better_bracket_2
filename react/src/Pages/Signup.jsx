@@ -1,40 +1,83 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import google_icon from '../assets/google_icon.png';
 import facebook_icon from '../assets/facebook_icon.png';
 import { useGoogleLogin } from '@react-oauth/google';
+import FacebookLogin from '@greatsumini/react-facebook-login';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
   const navigate = useNavigate();
-  const login = useGoogleLogin({
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [fbSdkLoaded, setFbSdkLoaded] = useState(false);
+
+  // Google Login
+  const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       console.log('Google Token:', tokenResponse);
-
       try {
-        // Correct the axios.post call to include the access token
         const res = await axios.post('http://127.0.0.1:8000/api/google-login', {
           access_token: tokenResponse.access_token,
         });
-
         console.log('Backend Response:', res.data);
-
-        // Store token in localStorage or state
         localStorage.setItem('authToken', res.data.token);
-
-        // Redirect user to dashboard
         navigate('/dashboard');
       } catch (error) {
         console.error('Error during login:', error.response?.data || error.message);
       }
     },
-    onError: () => console.log('Login Failed'),
+    onError: () => console.log('Google Login Failed'),
   });
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  // Load Facebook SDK
+  useEffect(() => {
+    if (!window.FB) {
+      window.fbAsyncInit = function () {
+        window.FB.init({
+          appId: "2500304330314427", // Replace with your App ID
+          cookie: true,
+          xfbml: true,
+          version: "v18.0",
+        });
+        setFbSdkLoaded(true);
+      };
+      
+      const script = document.createElement("script");
+      script.src = "https://connect.facebook.net/en_US/sdk.js";
+      script.async = true;
+      script.defer = true;
+      script.onload = () => console.log("Facebook SDK Loaded");
+      document.body.appendChild(script);
+    } else {
+      setFbSdkLoaded(true);
+    }
+  }, []);
+
+  // Facebook Login Handler
+  const handleFacebookResponse = async (response) => {
+    if (!fbSdkLoaded) {
+      console.error("Facebook SDK not loaded yet");
+      return;
+    }
+
+    console.log("Facebook Response:", response);
+    if (response.accessToken) {
+      try {
+        const res = await axios.post('http://127.0.0.1:8000/api/facebook-login', {
+          access_token: response.accessToken,
+        });
+        console.log('Backend Response:', res.data);
+        localStorage.setItem('authToken', res.data.token);
+        navigate('/dashboard');
+      } catch (error) {
+        console.error('Error during Facebook login:', error.response?.data || error.message);
+      }
+    } else {
+      console.log("Facebook login failed.");
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -100,23 +143,32 @@ const Signup = () => {
                 />
               </div>
               <button type="submit" className="btn btn-primary w-100">Signup</button>
-              <p style={{ marginLeft: '61px', marginTop: '14px' }}>
+              <p className="text-center mt-3">
                 Already have an account? <Link to="/login">Login</Link>
               </p>
 
-              <div>
+              <div className="text-center">
+                {/* Google Login */}
                 <img 
                   src={google_icon} 
                   alt="Google Login" 
-                  style={{ width: '20px', marginLeft: '200px', marginBottom: '-8px', cursor: 'pointer' }} 
-                  onClick={() => login()} 
+                  style={{ width: '20px', cursor: 'pointer' }} 
+                  onClick={() => googleLogin()} 
                 />
-                <p style={{ margin: '-20px 10px 0px 175px', marginLeft: '175px' }}>or</p>
-                <img 
-                  src={facebook_icon} 
-                  alt="Facebook Login" 
-                  style={{ width: '28px', marginLeft: '140px', marginTop: '-50px', cursor: 'pointer' }} 
-                  onClick={() => login()} 
+                <p>or</p>
+                {/* Facebook Login */}
+                <FacebookLogin
+                  appId="2500304330314427"
+                  autoLoad={false}
+                  callback={handleFacebookResponse}
+                  render={renderProps => (
+                    <img 
+                      src={facebook_icon} 
+                      alt="Facebook Login" 
+                      style={{ width: '28px', cursor: 'pointer' }} 
+                      onClick={renderProps.onClick} 
+                    />
+                  )}
                 />
               </div>
             </form>
