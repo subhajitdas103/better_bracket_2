@@ -13,7 +13,7 @@ class GoogleAuthController extends Controller
 {
     $accessToken = $request->input('access_token');
 
-   
+    // Fetch user info from Google
     $googleUser = Http::withHeaders([
         'Authorization' => "Bearer {$accessToken}",
     ])->get('https://www.googleapis.com/oauth2/v3/userinfo')->json();
@@ -22,7 +22,7 @@ class GoogleAuthController extends Controller
         return response()->json(['message' => 'Invalid token'], 401);
     }
 
-
+    // Find or create user
     $user = User::updateOrCreate(
         ['email' => $googleUser['email']],
         [
@@ -33,17 +33,14 @@ class GoogleAuthController extends Controller
         ]
     );
 
-
+    // Generate a Laravel authentication token
     $token = $user->createToken('google-token')->plainTextToken;
 
     return response()->json([
         'user' => $user,
         'token' => $token,
-   ]);
- }
+    ]);
+}
 
 
-
-
-
- }
+}
