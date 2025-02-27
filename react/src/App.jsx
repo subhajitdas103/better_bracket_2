@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import Dashboard from "./Pages/Dashboard";
-
+import logo from "./assets/nn.png"; // 
+// import bg from "../assets/soccer-players-action-professional-stadium.jpg";
 import { GoogleLogin } from '@react-oauth/google';
 const App = () => {
 
@@ -12,7 +13,12 @@ const App = () => {
       <div>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <div className="container-fluid">
-            <Link className="navbar-brand" to="/">Better Bracket</Link>
+
+
+<Link className="navbar-brand" to="/">
+  <img src={logo} alt="Better Bracket" width="100" height="100" style={{ marginTop: "-33px" }} />
+</Link>
+
             <button
               className="navbar-toggler"
               type="button"
@@ -25,7 +31,7 @@ const App = () => {
               <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
-              <ul className="navbar-nav ms-auto">
+              <ul className="navbar-nav ms-auto" style={{marginTop:"-33px"}}>
                 <li className="nav-item">
                   <Link className="nav-link" to="/login">Login</Link>
                 </li>

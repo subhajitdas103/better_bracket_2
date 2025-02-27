@@ -16,3 +16,9 @@ button {
   border: none;
   cursor: pointer;
 }
+
+.bg-light {
+  --bs-bg-opacity: 1;
+  /* background-color: rgb(125 126 230) !important; */
+  background-color: hsl(206, 67%, 31%);
+}
