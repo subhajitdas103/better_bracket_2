@@ -75,12 +75,12 @@ const Signup = () => {
     }
   };
 
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "auto"; // Reset when component unmounts
-    };
-  }, []);
+  // useEffect(() => {
+  //   document.body.style.overflow = "hidden";
+  //   return () => {
+  //     document.body.style.overflow = "auto"; // Reset when component unmounts
+  //   };
+  // }, []);
   
   return (
     // <div
@@ -168,10 +168,10 @@ const Signup = () => {
             <img
               src={google_icon}
               alt="Google Login"
-              style={{ width: "20px", cursor: "pointer" }}
+              style={{ width: "24px", cursor: "pointer" , marginTop:"-1px" , marginLeft:"5px" }}
               onClick={() => googleLogin()}
             />
-            <p>or</p>
+            
             <FacebookLogin
               appId="2500304330314427"
               autoLoad={false}
@@ -180,7 +180,7 @@ const Signup = () => {
                 <img
                   src={facebook_icon}
                   alt="Facebook Login"
-                  style={{ width: "28px", cursor: "pointer" }}
+                  style={{ width: "30px", cursor: "pointer" , marginLeft:"15px" }}
                   onClick={renderProps.onClick}
                 />
               )}
