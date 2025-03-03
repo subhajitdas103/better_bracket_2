@@ -110,10 +110,10 @@ const Signup = () => {
           {/* <p>Choose account type</p> */}
             <StyledWrapper>
             <div id="firstFilter" className="filter-switch">
-              <input defaultChecked id="option1" name="options" type="radio" />
-              <label className="option" htmlFor="option1">Group User</label>
-              <input id="option2" name="options" type="radio" />
-              <label className="option" htmlFor="option2">Group Leader</label>
+              <input defaultChecked id="groupuser" name="options" type="radio" />
+              <label className="option" htmlFor="groupuser">Group User</label>
+              <input id="groupleader" name="options" type="radio" />
+              <label className="option" htmlFor="groupleader">Group Leader</label>
               <span className="background" />
             </div>
             </StyledWrapper>
@@ -222,19 +222,19 @@ const StyledWrapper = styled.div`
     border-radius: 30px;
     transition: left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
-  #option2:checked ~ .background {
+  #groupleader:checked ~ .background {
     left: 50%;
   }
-  #option1:checked + label[for="option1"] {
+  #groupuser:checked + label[for="groupuser"] {
     color:rgb(255, 255, 255);
     font-weight: bold;
   }
-  #option2:checked + label[for="option2"] {
+  #groupleader:checked + label[for="groupleader"] {
     color:rgb(255, 255, 255);
     font-weight: bold;
   }
-  #option1:not(:checked) + label[for="option1"],
-  #option2:not(:checked) + label[for="option2"] {
+  #groupuser:not(:checked) + label[for="groupuser"],
+  #groupleader:not(:checked) + label[for="groupleader"] {
     color: #7d7d7d;
   }`;
 
