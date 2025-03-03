@@ -3,18 +3,19 @@ import { Link, useNavigate } from "react-router-dom";
 import google_icon from "../assets/google_icon.png";
 import facebook_icon from "../assets/facebook_icon.png";
 import bg from "../assets/soccer-players-action-professional-stadium.jpg";
-
+import styled from 'styled-components';
 import { useGoogleLogin } from "@react-oauth/google";
 import FacebookLogin from "@greatsumini/react-facebook-login";
 import axios from "axios";
-
+import { Radio, RadioGroup } from 'rsuite';
+import "rsuite/dist/rsuite.css";
 const Signup = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [fbSdkLoaded, setFbSdkLoaded] = useState(false);
-
+  const RadioLabel = ({ children }) => <label style={{ padding: 7 }}>{children}</label>;
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
@@ -83,19 +84,6 @@ const Signup = () => {
   // }, []);
   
   return (
-    // <div
-    //   style={{
-    //     position: "relative",
-    //     height: "100vh",
-    //     backgroundImage: `url(${bg})`,
-    //     backgroundSize: "cover",
-    //     backgroundPosition: "center",
-    //     display: "flex",
-    //     alignItems: "center",
-    //     justifyContent: "center",
-    //   }}
-    // >
-
 <div
   style={{
     position: "absolute",
@@ -116,13 +104,21 @@ const Signup = () => {
 
 
 
-      <div style={{ background: "rgba(255, 255, 255, 0.8)", padding: "30px", borderRadius: "10px", boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)" , width:"400px" , height:"31rem" , marginTop:"-100px" }}>
+    <div style={{ background: "rgba(255, 255, 255, 0.8)", padding: "30px", borderRadius: "10px", boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)" , width:"400px" , height:"34rem" , marginTop:"-100px" }}>
         <h2 className="text-center mb-4">Signup</h2>
-        <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          {/* <p>Choose account type</p> */}
+            <StyledWrapper>
+            <div id="firstFilter" className="filter-switch">
+              <input defaultChecked id="option1" name="options" type="radio" />
+              <label className="option" htmlFor="option1">Group User</label>
+              <input id="option2" name="options" type="radio" />
+              <label className="option" htmlFor="option2">Group Leader</label>
+              <span className="background" />
+            </div>
+            </StyledWrapper>
+          </div>
           <div className="mb-3">
-            <label htmlFor="email" className="form-label">
-              Email:
-            </label>
             <input
               type="email"
               className="form-control"
@@ -130,12 +126,10 @@ const Signup = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              placeholder="Email"
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="password" className="form-label">
-              Password:
-            </label>
             <input
               type="password"
               className="form-control"
@@ -143,12 +137,10 @@ const Signup = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              placeholder="Password"
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="confirmPassword" className="form-label">
-              Confirm Password:
-            </label>
             <input
               type="password"
               className="form-control"
@@ -156,6 +148,7 @@ const Signup = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
+              placeholder="Confirm Password"
             />
           </div>
           <button type="submit" className="btn btn-primary w-100">
@@ -186,10 +179,63 @@ const Signup = () => {
               )}
             />
           </div>
-        </form>
+      
       </div>
     </div>
   );
 };
+
+const StyledWrapper = styled.div`
+  .filter-switch {
+    border: 3px solid #86a9ff;
+    border-radius: 30px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 50px;
+    width: 336px;
+    overflow: hidden;
+  }
+  .filter-switch input {
+    display: none;
+  }
+  .filter-switch label {
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    border-radius: 30px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.5s;
+    font-weight: 500;
+    font-size: 18px;
+  }
+  .filter-switch .background {
+    position: absolute;
+    width: 49%;
+    height: 38px;
+    background-color:#0d6efd;
+    top: 4px;
+    left: 4px;
+    border-radius: 30px;
+    transition: left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  #option2:checked ~ .background {
+    left: 50%;
+  }
+  #option1:checked + label[for="option1"] {
+    color:rgb(255, 255, 255);
+    font-weight: bold;
+  }
+  #option2:checked + label[for="option2"] {
+    color:rgb(255, 255, 255);
+    font-weight: bold;
+  }
+  #option1:not(:checked) + label[for="option1"],
+  #option2:not(:checked) + label[for="option2"] {
+    color: #7d7d7d;
+  }`;
 
 export default Signup;
