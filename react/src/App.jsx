@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
+import ForgotPassword from "./Pages/ForgotPassword";
 import Dashboard from "./Pages/Dashboard";
 import logo from "./assets/nn.png"; // 
 // import bg from "../assets/soccer-players-action-professional-stadium.jpg";
@@ -49,6 +50,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
           </Routes>
         </div>
       </div>
