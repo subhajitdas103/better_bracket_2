@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import Sidebar from "../components/sidebar";
 const Dashboard = () => {
 
   return (
